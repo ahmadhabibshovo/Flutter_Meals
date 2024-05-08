@@ -1,10 +1,11 @@
-import 'dart:io' show Platform;
-
 import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_meal/screen/tab_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+//in your code
 
 final theme = ThemeData(
   useMaterial3: true,
@@ -16,12 +17,15 @@ final theme = ThemeData(
 );
 
 void main() {
-  runApp(
-    DevicePreview(
-      enabled: (Platform.isAndroid || Platform.isIOS) ? true : false,
-      builder: (context) => const ProviderScope(child: App()), // Wrap your app
+  final isWebMobile = kIsWeb &&
+      (defaultTargetPlatform == TargetPlatform.iOS ||
+          defaultTargetPlatform == TargetPlatform.android);
+  runApp(DevicePreview(
+    enabled: !isWebMobile,
+    builder: (context) => ProviderScope(
+      child: App(),
     ),
-  );
+  ));
 }
 
 class App extends StatelessWidget {
